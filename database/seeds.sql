@@ -1,4 +1,3 @@
-```sql
 TRUNCATE waiting_list, registrations, members, families, activities, associations, facilities RESTART IDENTITY CASCADE;
 
 INSERT INTO facilities (name, address, erp_capacity) VALUES
@@ -38,4 +37,4 @@ INSERT INTO members (family_id, first_name, last_name, birth_date, has_pass_spor
 (4, 'Amine', 'Chraibi', '2016-09-09', TRUE, '2026-02-01'),
 (4, 'Hiba', 'Chraibi', '2011-04-19', FALSE, '2026-02-01'),
 (2, 'Mehdi', 'Benjelloun', '2005-01-25', FALSE, '2023-01-01');
-```
+

@@ -2,11 +2,17 @@ require('dotenv').config();
 const { Pool } = require('pg');
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  max: 10
+connectionString: process.env.DATABASE_URL,
+});
+
+pool.query('SELECT NOW()', (err, res) => {
+    if (err) {
+        console.error('Erreur de connexion à la base de données :', err);
+    } else {
+        console.log('Connecté à PostgreSQL avec succès :', res.rows[0].now);
+    }
 });
 
 module.exports = {
   query: (text, params) => pool.query(text, params),
-  getClient: () => pool.connect()
 };
