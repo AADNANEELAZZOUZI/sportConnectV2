@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adhérents - SportConnect Pro</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+            --text-light: #64748b;
+            --border-color: #e2e8f0;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 40px 20px;
+        }
+        .container { max-width: 900px; margin: 0 auto; }
+        .nav-links { margin-bottom: 20px; }
+        .nav-links a { color: var(--primary); text-decoration: none; font-weight: 600; }
+        h1 { color: var(--primary); margin-top: 0; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--card-bg);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid var(--border-color); font-size: 0.95rem; }
+        th { background-color: #f1f5f9; font-weight: 600; color: var(--text-color); }
+        tr:last-child td { border-bottom: none; }
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            border-radius: 4px;
+        }
+        .badge-success { background-color: #dcfce7; color: #166534; }
+        .badge-warning { background-color: #fee2e2; color: #991b1b; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav-links">
+            <a href="/activities">← Voir les activités</a> | 
+            <a href="/facilities">Voir les installations</a>
+        </div>
+
+        <h1>Liste des Adhérents</h1>
+
+        <% if (members.length === 0) { %>
+            <p style="color: var(--text-light);">Aucun adhérent trouvé dans la base.</p>
+        <% } else { %>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Nom & Prénom</th>
+                        <th>Date de naissance</th>
+                        <th>Âge Fédéral (au 31 Déc.)</th>
+                        <th>Certificat Médical</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% members.forEach(member => { %>
+                        <tr>
+                            <td><strong><%= member.first_name %> <%= member.last_name %></strong></td>
+                            <td><%= member.birth_date ? new Date(member.birth_date).toLocaleDateString('fr-FR') : 'N/A' %></td>
+                            <td><%= member.age_at_dec31 %> ans</td>
+                            <td>
+                                <% if (member.is_certif_valid) { %>
+                                    <span class="badge badge-success">Conforme</span>
+                                <% } else { %>
+                                    <span class="badge badge-warning">Non conforme / Expiré</span>
+                                <% } %>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        <% } %>
+    </div>
+</body>
+</html>

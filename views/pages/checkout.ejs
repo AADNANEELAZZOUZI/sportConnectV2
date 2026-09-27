@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulation Tarifaire - SportConnect Pro</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+            --text-light: #64748b;
+            --border-color: #e2e8f0;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 40px 20px;
+        }
+        .container { max-width: 600px; margin: 0 auto; background: var(--card-bg); padding: 30px; border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05); }
+        h1 { color: var(--primary); margin-top: 0; font-size: 1.5rem; }
+        .result-box { background-color: #f1f5f9; padding: 20px; border-radius: 8px; margin-top: 20px; }
+        .result-box h3 { margin-top: 0; color: var(--primary); }
+        ul { padding-left: 20px; }
+        li { margin-bottom: 8px; }
+        .nav-links { margin-bottom: 20px; }
+        .nav-links a { color: var(--primary); text-decoration: none; font-weight: 600; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav-links">
+            <a href="/activities">← Retour aux activités</a>
+        </div>
+
+        <h1>Simulation de Devis (Moteur Tarifaire)</h1>
+        <p style="color: var(--text-light);">Exemple de calcul pour une activité de base à <strong><%= basePrice %> €</strong></p>
+
+        <div class="result-box">
+            <h3>Détail du calcul appliqué :</h3>
+            <ul>
+                <li>Résident : <strong><%= simulation.isResident ? 'Oui' : 'Non (+35%)' %></strong></li>
+                <li>Rang familial : <strong>Rang n°<%= simulation.familyRank %></strong></li>
+                <li>Quotient Familial : <strong><%= simulation.quotientFamilial %></strong></li>
+                <li>Pass'Sport : <strong><%= simulation.hasPassSport ? 'Appliqué (-50€)' : 'Aucun' %></strong></li>
+            </ul>
+            <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 15px 0;">
+            <p style="font-size: 1.2rem; margin: 0;">Prix Total Final : <strong style="color: #16a34a;"><%= calculation.totalEuros.toFixed(2) %> €</strong></p>
+            
+            <h4 style="margin-bottom: 5px; margin-top: 15px;">Échéancier en 3 fois :</h4>
+            <p style="margin: 4px 0; color: var(--text-light);">1ère échéance : <strong><%= calculation.installments.e1.toFixed(2) %> €</strong></p>
+            <p style="margin: 4px 0; color: var(--text-light);">2ème échéance : <strong><%= calculation.installments.e2.toFixed(2) %> €</strong></p>
+            <p style="margin: 4px 0; color: var(--text-light);">3ème échéance : <strong><%= calculation.installments.e3.toFixed(2) %> €</strong></p>
+        </div>
+    </div>
+</body>
+</html>
