@@ -29,33 +29,33 @@ router.on('GET', '/activities', async (req, res, params) => {
     }
 });
 
-router.on('GET', '/activities/:id', async (req, res, params) => {
-    try {
-        const activityId = params.id;
-        const result = await db.query('SELECT * FROM activities WHERE id = $1', [activityId]);
+// router.on('GET', '/activities/:id', async (req, res, params) => {
+//     try {
+//         const activityId = params.id;
+//         const result = await db.query('SELECT * FROM activities WHERE id = $1', [activityId]);
         
-        if (result.rows.length === 0) {
-            res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
-            res.end('Activité non trouvée');
-            return;
-        }
+//         if (result.rows.length === 0) {
+//             res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
+//             res.end('Activité non trouvée');
+//             return;
+//         }
 
-        ejs.renderFile(path.join(__dirname, 'views/pages/activity-detail.ejs'), { activity: result.rows[0] }, (err, str) => {
-            if (err) {
-                console.error('Erreur EJS :', err);
-                res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' });
-                res.end('Erreur de rendu de la vue');
-                return;
-            }
-            res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
-            res.end(str);
-        });
-    } catch (error) {
-        console.error('Erreur SQL :', error);
-        res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' });
-        res.end('Erreur serveur interne');
-    }
-});
+//         ejs.renderFile(path.join(__dirname, 'views/pages/activity-detail.ejs'), { activity: result.rows[0] }, (err, str) => {
+//             if (err) {
+//                 console.error('Erreur EJS :', err);
+//                 res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' });
+//                 res.end('Erreur de rendu de la vue');
+//                 return;
+//             }
+//             res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+//             res.end(str);
+//         });
+//     } catch (error) {
+//         console.error('Erreur SQL :', error);
+//         res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' });
+//         res.end('Erreur serveur interne');
+//     }
+// });
 
 // Route GET /facilities : Affiche la liste des installations sportives (EJS)
 router.on('GET', '/facilities', async (req, res, params) => {
@@ -214,6 +214,55 @@ router.on('GET', '/checkout-test', async (req, res, params) => {
         res.end('Erreur serveur interne');
     }
 });
+
+
+
+
+router.on('GET', '/activities/:id', async (req, res, params) => {
+    try {
+        const activityId = params.id;
+        const result = await db.query('SELECT * FROM activities WHERE id = $1', [activityId]);
+        
+        if (result.rows.length === 0) {
+            res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
+            res.end('Activité non trouvée');
+            return;
+        }
+
+        ejs.renderFile(path.join(__dirname, 'views/pages/activity-detail.ejs'), { activity: result.rows[0] }, (err, str) => {
+            if (err) {
+                console.error('Erreur EJS :', err);
+                res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' });
+                res.end('Erreur de rendu de la vue');
+                return;
+            }
+            res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+            res.end(str);
+        });
+    } catch (error) {
+        console.error('Erreur SQL :', error);
+        res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' });
+        res.end('Erreur serveur interne');
+    }
+});
+
+
+
+
+router.on("GET","/stats/ativivtises",async(req , res ,params)=>{
+    const result = await db.query("SELECT category, COUNT(*) AS count FROM activities GROUP BY category");
+    ejs.renderFile(path.join(__dirname, "views/pages/statsActivities.ejs"), { stats: result.rows }, (err, str) => {
+        if (err) {
+            console.error('Erreur EJS :', err);
+            res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' });
+            res.end('Err de la vue');
+            return;
+        }
+        res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' });
+        res.end(str);
+    });
+});
+
 
 
 
